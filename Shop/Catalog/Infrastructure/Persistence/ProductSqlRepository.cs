@@ -8,7 +8,7 @@ namespace Shop.Catalog.Infrastructure.Persistence
 {
     public class ProductSqlRepository : SqlRepository<Product, Guid>, IProductRepository
     {
-        public ProductSqlRepository(DbContext context) : base(context)
+        public ProductSqlRepository(CatalogContext context) : base(context)
         {
         }
     }

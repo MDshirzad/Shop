@@ -24,22 +24,22 @@ namespace Shop.Catalog.Infrastructure.Persistence
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(TEntity entity)
-        {
-            _set.Remove(entity);
-            await _context.SaveChangesAsync();
-        }
+        //public async Task DeleteAsync(TEntity entity)
+        //{
+        //    _set.Remove(entity);
+        //    await _context.SaveChangesAsync();
+        //}
 
        
 
-        public async Task<TEntity> GetByIdAsync(TId id) => await  _set.FindAsync(id);
+        //public async Task<TEntity> GetByIdAsync(TId id) => await  _set.FindAsync(id);
          
 
-        public async Task UpdateAsync(TId id, TEntity entity)
-        {
-           _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
+        //public async Task UpdateAsync(TId id, TEntity entity)
+        //{
+        //   _context.Entry(entity).State = EntityState.Modified;
+        //    await _context.SaveChangesAsync();
+        //}
 
         public async Task<IReadOnlyList<TEntity>> GetAllAsync()
         {

@@ -22,7 +22,7 @@ namespace Shop.Catalog.Presentation.Endpoints
         public void AddRoutes(IEndpointRouteBuilder app)
         {
             
-            //app.MapGet("product",GetAllProducts);
+            app.MapGet("product",GetAllProducts);
             app.MapGet("product/{id}",GetProduct);
             app.MapPost("product",CreateProduct);
             app.MapDelete("product/{id}",DeleteProduct);
@@ -53,7 +53,7 @@ namespace Shop.Catalog.Presentation.Endpoints
            return TypedResults.Accepted("");
         }
 
-        private async Task<IResult> CreateProduct([AsParameters]CreateProductAsParameter createProductAsParameters )
+        private async Task<IResult> CreateProduct([AsParameters]CreateProductAsParameter createProductAsParameters, [FromServices] IProductManager productManager )
         {
             var product = createProductAsParameters.product;
             var validation = createProductAsParameters._CreationValidator.Validate(product);
@@ -62,13 +62,29 @@ namespace Shop.Catalog.Presentation.Endpoints
                 return Results.BadRequest(validation.Errors);
             }
             var map = createProductAsParameters._mapper.Map<ProductForCreationDto,ProductForCreationApplicationDto>(product);
+
+
+            var result = await productManager.AddProductAsync(map);
+            if (result.IsSuccess)
+            {
+                return TypedResults.Ok();
+
+            }
+            return Results.BadRequest(result.Error);
             
-             return   TypedResults.Ok( await Task.FromResult(createProductAsParameters.product));
         }
 
         private async Task<IResult> GetAllProducts([FromServices]IProductManager productManager)
         {
-            return TypedResults.Ok(await productManager.GetAllProducts());
+            var result = await productManager.GetAllProducts();
+            if (result.IsSuccess)
+            {
+            return TypedResults.Ok(result.Value);
+
+            }
+            return Results.BadRequest(result.Error);
+
+
         }
     }
 }

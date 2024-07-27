@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CSharpFunctionalExtensions;
+using Shop.Catalog.Application.Contracts.Dtos.Product;
 using Shop.Catalog.Application.Product.Contracts;
 using Shop.Catalog.Domain.Products;
 using Shop.Catalog.Presentation.Contracts.Dtos.Product;
@@ -17,15 +19,25 @@ namespace Shop.Catalog.Application.Product
             this.productRepository = _productRepository;
             
         }
-        public Task<Result> AddProductAsync(ProductForCreationDto productForAddDto)
+        public async Task<Result> AddProductAsync(ProductForCreationApplicationDto productForAddDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+           await productRepository.AddAsync(new(Guid.NewGuid(), productForAddDto.Name, productForAddDto.Price, productForAddDto.Description));
+                return Result.Success();
+            }
+            catch (Exception ex)
+            {
+                return Result.Failure($"Error:{ex.Message}");
+                 
+            }
+       
         }
 
-        public Task<Result> DeleteProductAsync(Guid productId)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<Result> DeleteProductAsync(Guid productId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public async Task<Result<IReadOnlyList<Domain.Products.Product>>> GetAllProducts()
         {
