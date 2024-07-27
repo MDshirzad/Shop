@@ -1,6 +1,7 @@
 using System.Reflection;
 using Carter;
 using FluentValidation;
+using Shop.Catalog;
 using Shop.Catalog.Presentation.Contracts.Dtos;
 using Shop.Catalog.Presentation.Contracts.Validators;
 using Shop.Middlewares.ExceptionHandler;
@@ -11,6 +12,7 @@ var assemblyType=Assembly.GetAssembly(typeof(Program));
 
 builder.Services.AddValidatorsFromAssembly(assemblyType);
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddProductDependencyInjection(builder.Configuration);
 builder.Services.AddSwaggerGen();
 builder.Services.AddCarter();
 builder.Services.AddAutoMapper(assemblyType);

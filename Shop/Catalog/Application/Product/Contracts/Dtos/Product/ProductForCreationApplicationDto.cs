@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
  
 using Shop.Catalog.Domain;
-namespace Shop.Catalog.Application.Dtos.Product
+namespace Shop.Catalog.Application.Contracts.Dtos.Product
 {
     public class ProductForCreationApplicationDto  
     {

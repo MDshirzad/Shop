@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Shop.Catalog.Domain.Primitives;
 
-namespace Shop.Catalog.Domain
+namespace Shop.Catalog.Domain.Products
 {
     public class Product : Entity<Guid> 
     {
