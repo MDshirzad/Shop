@@ -2,9 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Carter;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Shop.Catalog.Application.Dtos.Product;
+using Shop.Catalog.Domain;
+using Shop.Catalog.Presentation.Contracts.AsParameters;
 using Shop.Catalog.Presentation.Contracts.Dtos.Product;
 using Shop.Catalog.Presentation.Contracts.Validators;
 
@@ -40,21 +45,26 @@ namespace Shop.Catalog.Presentation.Endpoints
 
         private async Task<IResult> GetProduct(int id)
         {
-           return   TypedResults.Ok( await Task.FromResult(0));
+
+           return TypedResults.Accepted("");
         }
 
-        private async Task<IResult> CreateProduct([FromBody]ProductForCreationDto Product,[FromServices] IValidator<ProductForCreationDto> _CreationValidator)
+        private async Task<IResult> CreateProduct([AsParameters]CreateProductAsParameter createProductAsParameters )
         {
-            var validation = _CreationValidator.Validate(Product);
+            var product = createProductAsParameters.product;
+            var validation = createProductAsParameters._CreationValidator.Validate(product);
             if(!validation.IsValid)
             {
                 return Results.BadRequest(validation.Errors);
             }
-             return   TypedResults.Ok( await Task.FromResult(Product));
+            var map = createProductAsParameters._mapper.Map<ProductForCreationDto,ProductForCreationApplicationDto>(product);
+            
+             return   TypedResults.Ok( await Task.FromResult(createProductAsParameters.product));
         }
 
         private async Task<IResult> GetAllProducts()
         {
+            ArgumentNullException.ThrowIfNullOrEmpty("");
            return   TypedResults.Ok( await Task.FromResult(0));
         }
     }

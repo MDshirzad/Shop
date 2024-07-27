@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using Shop.Catalog.Domain;
 namespace Shop.Catalog.Application.Dtos.Product
 {
-    public class ProductForCreationApplicationDto : Catalog.Domain.Product
+    public class ProductForCreationApplicationDto  
     {
-        public ProductForCreationApplicationDto(Guid ID) : base(ID)
-        {
-        }
+        public string Name { get; set; }
+       
+        public string? Description { get; set; }
+         
+        public decimal Price { get; set; }
     }
 }

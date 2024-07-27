@@ -11,7 +11,8 @@ namespace Shop.Catalog.Presentation.Contracts.Mapper.Product
     public class ProductMapper:Profile
     {
         public ProductMapper(){
-           CreateMap<ProductForCreationApplicationDto ,ProductForCreationDto>();
+           CreateMap<ProductForCreationDto ,ProductForCreationApplicationDto>();
+           
         }
         
     }
