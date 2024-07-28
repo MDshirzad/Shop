@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
  
@@ -8,10 +9,10 @@ namespace Shop.Catalog.Application.Contracts.Dtos.Product
 {
     public class ProductForCreationApplicationDto  
     {
-        public string Name { get; set; }
+        public required string Name { get; set; }
        
         public string? Description { get; set; }
          
-        public decimal Price { get; set; }
+        public required decimal Price { get; set; }
     }
 }

@@ -9,9 +9,9 @@ namespace Shop.Catalog.Domain.Primitives.Contracts
     {
         Task AddAsync(TEntity entity);
          Task<IReadOnlyList<TEntity>> GetAllAsync();
-     //   Task<TEntity> GetByIdAsync(TID id);
-     //   Task UpdateAsync(TID id,TEntity entity);
-     //   Task DeleteAsync(TEntity entity);
+       Task<TEntity> GetByIdAsync(TID id);
+       Task UpdateAsync(TEntity entity);
+       Task DeleteAsync(TEntity entity);
 
 
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Shop.Catalog.Application.Contracts.Dtos.Product;
+using Shop.Catalog.Application.Product.Contracts.Dtos.Product;
 using Shop.Catalog.Presentation.Contracts.Dtos.Product;
 
 namespace Shop.Catalog.Presentation.Contracts.Mapper.Product
@@ -12,7 +13,7 @@ namespace Shop.Catalog.Presentation.Contracts.Mapper.Product
     {
         public ProductMapper(){
            CreateMap<ProductForCreationDto ,ProductForCreationApplicationDto>();
-           
+           CreateMap<ProductForUpdateDto,ProductForUpdateDtoApplication>();
         }
         
     }

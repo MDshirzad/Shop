@@ -27,8 +27,8 @@ namespace Shop.Catalog
             //services.AddProblemDetails();
            services.AddValidatorsFromAssembly(assemblyType);
 
-             services.AddScoped<IProductRepository, ProductSqlRepository>();
-             services.AddScoped<IProductManager, ProductManager>();
+             services.AddTransient<IProductRepository, ProductSqlRepository>();
+             services.AddTransient<IProductManager, ProductManager>();
             var conf = configuration.GetConnectionString("Catalog");
 
             services.AddDbContext<CatalogContext>(options => {

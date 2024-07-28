@@ -9,9 +9,17 @@ using Shop.Catalog.Domain.Primitives.Contracts;
 
 namespace Shop.Catalog.Infrastructure.Persistence
 {
-    public abstract class SqlRepository<TEntity, TId> : IRepository<TEntity, TId> where TEntity : Entity<TId> where TId : notnull
+    public abstract class  SqlRepository<TEntity, TId> :IDisposable,
+     IRepository<TEntity, TId> where TEntity :
+      Entity<TId> where TId : notnull
     {
- protected SqlRepository(DbContext context)
+    public virtual async void Dispose()
+        { 
+           await _context.DisposeAsync();
+             
+        }
+        
+    protected SqlRepository(DbContext context)
     {
         _context = context;
         _set = _context.Set<TEntity>();
@@ -22,29 +30,29 @@ namespace Shop.Catalog.Infrastructure.Persistence
         {
             await _set.AddAsync(entity);
             await _context.SaveChangesAsync();
+           
         }
 
-        //public async Task DeleteAsync(TEntity entity)
-        //{
-        //    _set.Remove(entity);
-        //    await _context.SaveChangesAsync();
-        //}
+        public async Task DeleteAsync(TEntity entity)
+        {
+           _set.Remove(entity);
+           await _context.SaveChangesAsync();
+        }
 
-       
+        public async Task<TEntity> GetByIdAsync(TId id) => await  _set.FindAsync(id);         
 
-        //public async Task<TEntity> GetByIdAsync(TId id) => await  _set.FindAsync(id);
-         
-
-        //public async Task UpdateAsync(TId id, TEntity entity)
-        //{
-        //   _context.Entry(entity).State = EntityState.Modified;
-        //    await _context.SaveChangesAsync();
-        //}
+        public async Task UpdateAsync( TEntity entity)
+        {
+          _context.Entry(entity).State = EntityState.Modified;
+           await _context.SaveChangesAsync();
+        }
 
         public async Task<IReadOnlyList<TEntity>> GetAllAsync()
         {
             var result =await _set.ToListAsync();
            return result.ToImmutableList();
         }
+
+        
     }
 }
