@@ -14,8 +14,8 @@ namespace Shop.Catalog.Application.Product.Contracts
     { 
     Task<Result> AddProductAsync(ProductForCreationApplicationDto productForAddDto);
     Task<Result> UpdateProductAsync(Guid productId, ProductForUpdateDtoApplication productForUpdateDto);
-   Task<Result> DeleteProductAsync(Guid productId);
- Task<Result< Domain.Products.Product> > GetProductByIdAsync(Guid productId);
-  Task<Result<IReadOnlyList<Domain.Products.Product>>> GetAllProducts( );
+    Task<Result> DeleteProductAsync(Guid productId);
+    Task<Result< Domain.Products.Product>> GetProductByIdAsync(Guid productId);
+    Task<Result<IReadOnlyList<Domain.Products.Product>>> GetAllProducts();
     }
 }
