@@ -1,21 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+ 
 using AutoMapper;
 using Carter;
+using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Shop.Catalog.Application.Dtos.Product;
+  
+using Shop.Catalog.Application.Contracts.Dtos.Product;
+using Shop.Catalog.Application.Product.Contracts;
+using Shop.Catalog.Application.Product.Contracts.Dtos.Product;
 using Shop.Catalog.Domain;
+using Shop.Catalog.Domain.Products;
 using Shop.Catalog.Presentation.Contracts.AsParameters;
 using Shop.Catalog.Presentation.Contracts.Dtos.Product;
 using Shop.Catalog.Presentation.Contracts.Validators;
+using IResult = Microsoft.AspNetCore.Http.IResult;
 
 namespace Shop.Catalog.Presentation.Endpoints
 {
-    public class ProductEndpoint : ICarterModule
+    public class ProductEndpoint(   ) : ICarterModule
     {
         
         public void AddRoutes(IEndpointRouteBuilder app)
@@ -25,31 +27,47 @@ namespace Shop.Catalog.Presentation.Endpoints
             app.MapGet("product/{id}",GetProduct);
             app.MapPost("product",CreateProduct);
             app.MapDelete("product/{id}",DeleteProduct);
-            app.MapPut("product/{id}",UpdateProduct);
+           app.MapPut("product/{id}",UpdateProduct);
 
            
         }
-        public record Product(string Name,decimal Price);
+     
 
-        private async Task<IResult> UpdateProduct(int id,[FromBody]Product Product)
+        private async Task<IResult> UpdateProduct(Guid id,[FromBody]ProductForUpdateDto product,[FromServices] IMapper mapper,[FromServices] IProductManager productManager)
         {
 
+            var pm = mapper.Map<ProductForUpdateDto,ProductForUpdateDtoApplication>(product);
+            var result = await productManager.UpdateProductAsync(id,pm);
+             if(result.IsSuccess){
+                var resultGet = await productManager.GetProductByIdAsync(id);
+                return TypedResults.Ok(resultGet.Value);
+             }
             
-             return   TypedResults.Ok( await Task.FromResult(Product));
+            return TypedResults.BadRequest(result.Error);
+             
         }
 
-        private async Task<IResult> DeleteProduct(int id)
+        private async Task<IResult> DeleteProduct(Guid id,[FromServices] IProductManager productManager)
         { 
-             return   TypedResults.Ok( await Task.FromResult(0));
+             var result = await productManager.DeleteProductAsync(id);
+             if(result.IsSuccess){
+
+                return Results.Ok();
+             }
+             return Results.BadRequest(result.Error);
         }
 
-        private async Task<IResult> GetProduct(int id)
+        private async Task<IResult> GetProduct(Guid id,[FromServices] IProductManager productManager)
         {
-
-           return TypedResults.Accepted("");
+            var result = await productManager.GetProductByIdAsync(id);
+            if(result.IsSuccess){
+                return Results.Ok(result.Value);
+            }
+            return Results.Problem(result.Error);
+       
         }
 
-        private async Task<IResult> CreateProduct([AsParameters]CreateProductAsParameter createProductAsParameters )
+        private async Task<IResult> CreateProduct([AsParameters]CreateProductAsParameter createProductAsParameters, [FromServices] IProductManager productManager )
         {
             var product = createProductAsParameters.product;
             var validation = createProductAsParameters._CreationValidator.Validate(product);
@@ -58,14 +76,29 @@ namespace Shop.Catalog.Presentation.Endpoints
                 return Results.BadRequest(validation.Errors);
             }
             var map = createProductAsParameters._mapper.Map<ProductForCreationDto,ProductForCreationApplicationDto>(product);
+
+
+            var result = await productManager.AddProductAsync(map);
+            if (result.IsSuccess)
+            {
+                return TypedResults.Ok();
+
+            }
+            return Results.BadRequest(result.Error);
             
-             return   TypedResults.Ok( await Task.FromResult(createProductAsParameters.product));
         }
 
-        private async Task<IResult> GetAllProducts()
+        private async Task<IResult> GetAllProducts([FromServices]IProductManager productManager)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty("");
-           return   TypedResults.Ok( await Task.FromResult(0));
+            var result = await productManager.GetAllProducts();
+            if (result.IsSuccess)
+            {
+            return TypedResults.Ok(result.Value);
+
+            }
+            return Results.BadRequest(result.Error);
+
+
         }
     }
 }
