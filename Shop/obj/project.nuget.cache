@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "EESYjeSOyc+IXDTvZgLqE4ZoD+GdO1qAYLwPXU4JvhDeWDRDyLP9EV/ZGszTQjxk9YIcUqL80f1AXtOe0NIbHg==",
+  "dgSpecHash": "Y89wcdu0Eh0A8mYJHCx4L+ZO5zs+RIw3sB07JBQjYW0Nup7S3F9sziJnc9TT3mtZaPbLTjX8TtFTNPpHFD4UtQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\m.shirzad\\Desktop\\Cs\\ShopCourse\\Shop\\Shop.csproj",
   "expectedPackageFiles": [
@@ -25,6 +25,7 @@
     "C:\\Users\\m.shirzad\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
     "C:\\Users\\m.shirzad\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.4.0\\swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512",
     "C:\\Users\\m.shirzad\\.nuget\\packages\\system.collections.immutable\\7.0.0\\system.collections.immutable.7.0.0.nupkg.sha512",
+    "C:\\Users\\m.shirzad\\.nuget\\packages\\system.linq.dynamic.core\\1.4.3\\system.linq.dynamic.core.1.4.3.nupkg.sha512",
     "C:\\Users\\m.shirzad\\.nuget\\packages\\system.reflection.metadata\\7.0.0\\system.reflection.metadata.7.0.0.nupkg.sha512",
     "C:\\Users\\m.shirzad\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\m.shirzad\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512",
