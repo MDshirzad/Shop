@@ -1,7 +1,7 @@
  
 using AutoMapper;
 using Carter;
-using CSharpFunctionalExtensions;
+ 
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
   
@@ -13,6 +13,7 @@ using Shop.Catalog.Domain.Products;
 using Shop.Catalog.Presentation.Contracts.AsParameters;
 using Shop.Catalog.Presentation.Contracts.Dtos.Product;
 using Shop.Catalog.Presentation.Contracts.Validators;
+ 
 using IResult = Microsoft.AspNetCore.Http.IResult;
 
 namespace Shop.Catalog.Presentation.Endpoints
@@ -28,10 +29,20 @@ namespace Shop.Catalog.Presentation.Endpoints
             app.MapPost("product",CreateProduct);
             app.MapDelete("product/{id}",DeleteProduct);
            app.MapPut("product/{id}",UpdateProduct);
+            app.MapGet("product/search", SearchProduct);
 
            
         }
-     
+
+        private async Task<IResult> SearchProduct( [FromQuery] string sort, [FromQuery] string text, [FromServices]IProductManager productManager,[FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10)
+        {
+            var result = await productManager.SearchAsync(new(sort,pageSize,pageIndex),text);
+            if (result.IsSuccess)
+            {
+                return TypedResults.Ok( result.Value);
+            }
+            return TypedResults.BadRequest(result.Error);
+        }
 
         private async Task<IResult> UpdateProduct(Guid id,[FromBody]ProductForUpdateDto product,[FromServices] IMapper mapper,[FromServices] IProductManager productManager)
         {

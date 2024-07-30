@@ -7,6 +7,7 @@ using CSharpFunctionalExtensions;
 using Shop.Catalog.Application.Contracts.Dtos.Product;
 using Shop.Catalog.Application.Product.Contracts;
 using Shop.Catalog.Application.Product.Contracts.Dtos.Product;
+using Shop.Catalog.Application.Product.Queries;
 using Shop.Catalog.Domain.Products;
 using Shop.Catalog.Presentation.Contracts.Dtos.Product;
 
@@ -50,6 +51,11 @@ namespace Shop.Catalog.Application.Product
             }
         }
 
+        public Task<Result<PagedList<Domain.Products.Product>>> FilterAsync(QueryParams data, string? criteria)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Result<IReadOnlyList<Domain.Products.Product>>> GetAllProducts()
         {
             try{
@@ -72,6 +78,8 @@ namespace Shop.Catalog.Application.Product
            } 
         }
 
+       
+
         public async Task<Result> UpdateProductAsync(Guid productId, ProductForUpdateDtoApplication productForUpdateDto)
         {
             try{
@@ -89,6 +97,20 @@ namespace Shop.Catalog.Application.Product
 }catch(Exception ex){
         return Result.Failure($"Error On Update Product:{ex.Message}");
 }
+        }
+
+      public async  Task<Result<PagedList<Domain.Products.Product>>>  SearchAsync(QueryParams data, string? text)
+        {
+            try
+            {
+
+                var res = await productRepository.SearchAsync(data, text);
+                return Result.Success(res);
+            }
+            catch (Exception ex)
+            {
+                return Result.Failure<PagedList<Domain.Products.Product>>($"Error On Search With:PageSize {data.PageSize}, Page Index {data.PageIndex}, Text {text}");
+            }
         }
     }
 }
