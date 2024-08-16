@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Shop.Catalog.Application.Product.Queries;
 using Shop.Catalog.Domain.Primitives;
 using Shop.Catalog.Domain.Primitives.Contracts;
 
@@ -52,7 +54,25 @@ namespace Shop.Catalog.Infrastructure.Persistence
             var result =await _set.ToListAsync();
            return result.ToImmutableList();
         }
+        
+  public async Task<IReadOnlyList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+  {
+      var result = await _set.Where(predicate).ToListAsync();
 
+      return result.ToImmutableList();
+  }
+
+  public async Task<PagedList<TEntity>> FilterAsync(QueryParams queries,string? criteria)
+  {
+      var result = await _set.AsNoTracking()
+          .WhereIf(criteria)
+          .OrderByIf(criteria)
+          .PagingAsync(queries.PageSize, queries.PageIndex);
+
+      return result;
+  }
+
+  public abstract Task<PagedList<TEntity>> SearchAsync(QueryParams queries,string? text);
         
     }
 }
